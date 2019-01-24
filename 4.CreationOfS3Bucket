@@ -1,0 +1,15 @@
+Here we will be creating a S3 bucket that KOPS will use to store the cluster state.
+
+1. Go to AWS Management Console
+2. Click on the S3 link under Storage.
+            ------------------- 
+3. Click on | + Create bucket | button.
+            -------------------
+4. Enter the bucket name.
+   For example, kops-state-store,cluster-state etc.
+5. Ensure that the zone is the same in which we are going to create our cluster.
+            ----------
+6. Click on | Create |
+            ----------
+7. Great!
+   We have created the S3 bucket.

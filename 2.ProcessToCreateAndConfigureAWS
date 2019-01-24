@@ -1,0 +1,31 @@
+Here we are going to set up AWS account and configure it.
+
+1. Go to AWS website and create an AWS account.
+   We may choose freeTier one or paid one, choice is yours.
+   (AWS may charge you for using resources beyond what comes with free tier)
+
+2) Set up IAM user
+   This is a must to inorder to make any changes like to your AWS account like creating/updating resources.
+   You may follow https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html to setup an IAM user
+   or follow along to create it
+   2.1) Go to AWS management console
+   2.2) Click on the IAM link under Security,Identy, & Compliance
+   2.3) Click on Users under IAM Resources
+   2.4) Click on Add User button
+   2.5) Enter the User name
+   2.6) Tick on Programmatic access on Access type
+   2.7) Click on Next: Permission button.
+   2.8) Click Attach existing policies directly
+   2.9) Add the following permissions
+        * AmazonEC2FullAccess
+	* AmazonRoute53FullAccess
+	* AmazonS3FullAccess
+	* IAMFullAccess
+	* AmazonVPCFullAccess
+   2.10) Click on Next:Tags
+         It's optional(You may skip it)
+   2.11) Click on Next:Review
+   2.12) Click on create Create user button
+   2.13) Note down or download the Access ID and secret access key
+         Both are required during AWS CLI configuration.
+

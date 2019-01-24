@@ -1,0 +1,8 @@
+We are going to install a single node Kubernetes Cluster.
+We need the following:
+1) Cloud platform: AWS(an account in AWS is required)
+2) Tool to create the cluster: KOPs
+3) Tool to access the cluster: Kubectl
+4) Place to store the cluster state(KOPs needs it): S3 bucket
+
+Don't worry about all of the above, just be patient and follow along.

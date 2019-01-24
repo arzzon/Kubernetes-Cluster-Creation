@@ -1,0 +1,49 @@
+1. Getting the list of nodes
+   
+   --------------------------
+   kubectl get nodes -o wide
+   --------------------------
+   
+   It displays all the nodes present in the cluster with some details about them like,
+   
+   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   NAME                                           STATUS     ROLES     AGE       VERSION   INTERNAL-IP      EXTERNAL-IP      OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
+   ip-172-20-119-105.eu-west-2.compute.internal   Ready      master    45m       v1.11.6   172.20.119.105   35.178.188.117   Ubuntu 16.04.5 LTS   4.4.0-1067-aws   docker://17.3.2
+   ip-172-20-127-81.eu-west-2.compute.internal    Ready      node      34m       v1.11.6   172.20.127.81    3.8.24.75        Ubuntu 16.04.5 LTS   4.4.0-1067-aws   docker://17.3.2
+   ip-172-20-41-149.eu-west-2.compute.internal    Ready      node      34m       v1.11.6   172.20.41.149    35.178.203.85    Ubuntu 16.04.5 LTS   4.4.0-1067-aws   docker://17.3.2
+   ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+2. Getting the list of pods
+
+   ------------------------------------------
+   kubectl get pods -o wide --all-namespaces
+   ------------------------------------------
+   
+   It displays the list of pods running in the cluster in all the namespaces.
+   
+  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   NAMESPACE     NAME                                                                   READY     STATUS    RESTARTS   AGE       IP               NODE                                      NOMINATED NODE
+  kube-system   dns-controller-547884bc7f-6rv8s                                        1/1       Running   0          6m        <  some ip   >   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   etcd-server-events-ip-172-20-119-105.eu-west-2.compute.internal        1/1       Running   0          5m        172.20.119.105   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   etcd-server-ip-172-20-119-105.eu-west-2.compute.internal               1/1       Running   0          5m        172.20.119.105   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   kube-apiserver-ip-172-20-80-169.eu-west-2.compute.internal             1/1       Running   0          5m        172.20.119.105   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   kube-controller-manager-ip-172-20-80-169.eu-west-2.compute.internal    1/1       Running   0          5m        172.20.119.105   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   kube-dns-6b4f4b544c-d9vrl                                              3/3       Running   0          6m        <  some ip   >   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   kube-dns-autoscaler-6b658bd4d5-59c4s                                   1/1       Running   0          6m        <  some ip   >   ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   kube-proxy-ip-172-20-80-169.eu-west-2.compute.internal                 1/1       Running   0          5m        172.20.80.169    ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  kube-system   kube-scheduler-ip-172-20-80-169.eu-west-2.compute.internal             1/1       Running   0          5m        172.20.80.169    ip-172-20-119-105.eu-west-2.compute.internal    <none>
+  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  The above output is just for reference, there would be multiple pods in the worker nodes as well and few nodes for networking.
+
+
+3. Getting the list of services
+
+   -----------------------------------------
+   kubectl get svc -o wide --all-namespaces
+   -----------------------------------------
+   
+   This would list all the services running in all the namespaces.
+
+

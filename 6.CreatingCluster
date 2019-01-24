@@ -1,0 +1,129 @@
+Here we are going to create K8s cluster by using KOPS.
+
+Few things to know before creating the cluster:
+* We are going to create a cluster with 1 master and 2 workers
+* All the nodes are Linux based machines.
+* We will be using Gossip DNS(This removes all those requirements of 
+  setting up private/public hosted zones and setting up the NS records)
+* We don't have to do much for using Gossip DNS, just by naming our 
+  cluster with a name ending with .k8s.local we do all the neccessary 
+  things.
+
+
+1. Setup the required ENV variable.
+   Run   export KOPS_STATE_STORE=s3://<s3bucketname>
+   For Example export KOPS_STATE_STORE=s3://cluster-state-store
+
+
+2. Generate the ssh key pair if not already present.
+   Run the following commands:
+   -------------------------------------------------------------------------
+   ssh-keygen
+   Enter file in which to save the key (/home/username/.ssh/id_rsa): <ENTER>
+   Enter passphrase (empty for no passphrase): <ENTER>
+   Enter same passphrase again <ENTER>
+   -------------------------------------------------------------------------
+  
+   KOPS will use this key pair to ensure the we can ssh the nodes using this key.
+   KOPS will copy the ssh public key to all the nodes to achieve this.
+
+
+3. Generate the cluster configuration by replacing the specific values.
+   -------------------------------------------------------------------
+   sudo kops create cluster \
+   --cloud aws \
+   --ssh-public-key /home/<machine's username>/.ssh/id_rsa.pub \
+   --master-size <size of master> \
+   --node-size <size of worker nodes> \
+   --networking <networking to be used> \
+   --state s3://<S3 bucket name> \
+   --zones <zone name> \
+   --node-count=<number of worker nodes>  \
+   --name <name of the cluster>
+   --------------------------------------------------------------------
+
+  For example:
+
+   sudo kops create cluster \
+   --cloud aws \
+   --ssh-public-key /home/ubuntu/.ssh/id_rsa.pub \
+   --master-size t2.medium \
+   --node-size t2.medium \
+   --networking calico \
+   --state s3://cluster-state-store \
+   --zones eu-west-2a \
+   --node-count=2  \
+   --name cluster.k8s.local
+
+  ---------------------------------------------------------------------
+
+  We may remove the networking flag completely, which will mean that cluster will be created with kubenet for networking.
+   
+
+4. Check wheteher configuration has been successful.
+   Run   kops get cluster
+   The above command will show the name of the cluster.
+
+
+5. Editing the cluster.
+   Run kops edit cluster <cluster-name>
+   The above command will show the cluster configurations, if we wish we can change the configurations. For this we need to edit the file the save it.
+   Here we are proceeding with the default configuration.
+
+
+6. Updating ETCD datastore.
+   By default KOPS creates cluster with ETCDv2 datastore, we may update it to ETCDv3 if we wish. However with networking = calico, ETCDv3 is used by default.
+   To update, run the following commands by replacing the cluster name:
+   
+   -----------------------------------------------------------------------------------
+   export KOPS_FEATURE_FLAGS=SpecOverrideFlag
+   kops set cluster cluster.spec.etcdClusters[*].version=3.2.18 --name=<cluster-name>
+   -----------------------------------------------------------------------------------
+
+   (This step is optional, you may skip it)
+
+
+7. Deploying the cluster.
+   
+   To deploy the cluster run the following command:
+
+   -------------------------------------------------
+   kops update cluster <cluster-name> --yes
+   -------------------------------------------------
+
+   The --yes flag ensures that the cluster is deployed.
+
+
+8. Checking for successfull cluster creation.
+
+   ----------------------------
+   Run   kops validate cluster
+   ----------------------------
+
+   The above command will show all the nodes and a message that whether the validation has been successfull or not.
+   This will take 2-3 minutes.
+   Once the validation is successful, we can communicate with database using kubectl.
+
+
+9. Communicating with the database
+
+   -------------------------------
+   Run  kubectl get nodes -o wide
+   -------------------------------
+   
+   This should talk to the kubernetes API server and return the list of nodes present in the cluster that you have created.
+
+
+10. SSH to the master node
+
+    Now, we can ssh into the master node and create/delete resources from there.
+
+    -----------------------------------------------------
+    ssh -i ~/.ssh/id_rsa ubuntu@<public ip of the master>
+    -----------------------------------------------------
+
+    We can get the public ip of the master from the command in step 9, under the External IP section.
+
+11. Hurray!
+
+    We have the setup ready now.

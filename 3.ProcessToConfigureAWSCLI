@@ -1,0 +1,14 @@
+Here we are going to configure AWS CLI on our local machine.
+(The following instructions assume that you have a linux machine)
+
+1. Run   sudo apt-get update
+2. Run   sudo apt install awscli
+3. Run   aws configure
+   AWS Access Key ID: <Enter your access KEY>
+   AWS Secret Access Key: <Enter your Screte Access Key>
+   Default region name: <Enter the zone in which you want to create your resources>
+   Default output format: <Enter json/text, if left blank then json is assumed>
+4. To test whether it's configured correctly
+   Run   aws sts get-caller-identity
+   It should output few details of the IAM user
+5. Now our AWS CLI is configured.
